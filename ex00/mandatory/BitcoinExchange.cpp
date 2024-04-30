@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/04/30 18:05:15 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:42:51 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ bool BitcoinExchange::checkDigits(std::string const & date, int(*func)(int))
 	return (true);
 }
 
+bool BitcoinExchange::LeapYear(int const &intYear)
+{
+	if ((intYear % 4 == 0 && intYear % 100 != 0) || intYear % 400 == 0)
+		return (true);
+	return (false);
+}
+
 bool BitcoinExchange::checkInts(std::string const &year, std::string const &month,
 std::string const &day)
 {
@@ -116,10 +123,13 @@ std::string const &day)
 		return (false);
 	if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && intDay > 30)
 		return (false);
-	
-	
-	
-	
+	if (intMonth == 2)
+	{
+		bool isLeapYear = LeapYear(intYear);
+		if (intDay > (isLeapYear ? 29 : 28))
+			return (false);
+	}
+	return (true);
 }
 
 bool BitcoinExchange::isDateValid(std::string const & date)
