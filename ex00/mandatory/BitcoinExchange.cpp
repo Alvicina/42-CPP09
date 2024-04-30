@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/04/30 12:34:26 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:53:50 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ int	BitcoinExchange::start(std::string const & fileName)
 			std::cerr << "Error: bad input in line" << std::endl;
 			continue;
 		}
-		
+		std::string date = trimSpace(line.substr(0, lim)); // gestionamos espacios 
+		std::string	amount = trimSpace(line.substr(lim + 1, line.length() - lim)); // gestionamos espacios
 	}
 	return (EXIT_SUCCESS);
 }

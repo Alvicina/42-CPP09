@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "C/C++: clang build and debug active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/ex00/btc",
+            "args": ["input.txt"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/ex00",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+        //    "preLaunchTask": "C/C++: clang build active file"
+        }
+    ],
+    "version": "2.0.0"
+}
