@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/04/30 12:53:50 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:05:15 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,57 @@ int	BitcoinExchange::checker(std::string *line, std::ifstream *inputFile)
 	return (EXIT_SUCCESS);
 }
 
+bool BitcoinExchange::checkDigits(std::string const & date, int(*func)(int))
+{
+	for (size_t i = 0; i < date.length(); i++)
+	{
+		if (!func(date[i]))
+			return (false);
+	}
+	return (true);
+}
+
+bool BitcoinExchange::checkInts(std::string const &year, std::string const &month,
+std::string const &day)
+{
+	std::stringstream	ssyear(year);
+	std::stringstream	ssmonth(month);
+	std::stringstream	ssday(day);
+	int					intYear;
+	int					intMonth;
+	int					intDay;
+
+	ssyear >> intYear;
+	ssmonth >> intMonth;
+	ssday	>> intDay;
+	if (intYear < 2009 || intYear > 2022 || intMonth < 1 || intMonth > 12
+	|| intDay < 1 || intDay > 31)
+		return (false);
+	if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && intDay > 30)
+		return (false);
+	
+	
+	
+	
+}
+
+bool BitcoinExchange::isDateValid(std::string const & date)
+{
+	if (date.length() < 10)
+		return (false);
+	if (date[4] != '-' || date[7] != '-')
+		return (false);
+	std::string year = date.substr(0, 4);
+	std::string month = date.substr(5, 2);
+	std::string day = date.substr(8, 2);
+	if (!checkDigits(year, isdigit) || !checkDigits(month, isdigit)
+	|| !checkDigits(day, isdigit))
+		return (false);
+	if (!checkInts(year, month, day))
+		return (false);
+	return (true);
+}
+
 int	BitcoinExchange::start(std::string const & fileName)
 {
 	std::ifstream	inputFile(fileName);
@@ -105,6 +156,14 @@ int	BitcoinExchange::start(std::string const & fileName)
 		}
 		std::string date = trimSpace(line.substr(0, lim)); // gestionamos espacios 
 		std::string	amount = trimSpace(line.substr(lim + 1, line.length() - lim)); // gestionamos espacios
+		if (!isDateValid(date) || amount.empty())
+		{
+			std::cerr << "Error: Date or amount not valid:" << line << std::endl;
+			continue; 
+		}
+		
+		
+		
 	}
 	return (EXIT_SUCCESS);
 }
