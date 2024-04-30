@@ -1,0 +1,11 @@
+*.o
+*.out
+*.a
+*.log
+*.sh
+*.supp
+*.dSYM
+megaphone
+phonebook
+/.vscode/
+.DS_Store
