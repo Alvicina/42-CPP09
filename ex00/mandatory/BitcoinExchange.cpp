@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 16:23:12 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:37:24 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,7 +282,7 @@ std::map<std::string, std::string>::iterator	it)
 	}
 	return (prevDate);
 }
-
+/*
 std::string BitcoinExchange::nextRoutine(std::string const & date,
 std::map<std::string, std::string>::iterator	it)
 {
@@ -297,8 +297,8 @@ std::map<std::string, std::string>::iterator	it)
 		it = _data.find(nextDate);
 	}
 	return (nextDate);
-}
-
+}*/
+/*
 std::string	BitcoinExchange::whichDate(std::string const & preDate,
 std::string const & nextDate, std::string const & date)
 {
@@ -313,7 +313,7 @@ std::string const & nextDate, std::string const & date)
 		return (nextDate);
 	else 
 		return (preDate);
-}
+}*/
 
 void	BitcoinExchange::outputData(std::string const & date, std::string const & amount)
 {	
@@ -324,14 +324,18 @@ void	BitcoinExchange::outputData(std::string const & date, std::string const & a
 	if (it == _data.end()) //2)si no la encontramos, buscamos la anterior y la siguiente
 	{
 		std::string	preDate = prevRoutine(date, it);
-		std::string nextDate = nextRoutine(date, it);
+		//std::string nextDate = nextRoutine(date, it);
 		if (preDate == date)
-			dateToUse = nextDate;
-		else if (nextDate == date)
+		{
+			std::cerr << "Error: no available data for date specified" << std::endl;
+			return ;
+			//dateToUse = nextDate;
+		}
+		/*else if (nextDate == date)
 			dateToUse = preDate;
 		else
-			dateToUse = whichDate(preDate, nextDate, date);
-		it = _data.find(dateToUse);
+			dateToUse = whichDate(preDate, nextDate, date);*/
+		it = _data.find(preDate); //it = _data.find(dateToUse);
 	}
 	std::cout << date << " => " << amount << " = ";
 	std::cout << stringToDouble(it->second) * stringToDouble(amount) << std::endl;
