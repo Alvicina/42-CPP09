@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:56:59 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 13:33:49 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:59:32 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ class BitcoinExchange
 		void	outputData(std::string const & date, std::string const & amount);
 		std::string getPrevDate(std::string const & actualDate);
 		int		stringToInt(std::string const & str);
+		double	stringToDouble(std::string const & str);
 		std::string intToString(int const &toString);
 		std::string	getNextDate(std::string const & actualDate);
 		std::string prevRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it);
 		std::string nextRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it);
+		std::string	whichDate(std::string const & preDate, std::string const & nextDate, std::string const & date);
 		
 	public:
 		BitcoinExchange();

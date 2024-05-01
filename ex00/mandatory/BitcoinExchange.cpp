@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 13:40:17 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:23:12 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,8 @@ bool BitcoinExchange::isAmountValid(std::string const & amount)
 
 bool BitcoinExchange::isAmountInRange(std::string const & amount)
 {
-	std::stringstream ssamount(amount);
-	double	amountDouble; //necesitamos un double porque nos pueden pasar decimales. double > float;
-	//sino con un int y un atoi se podria haber hecho;
-	ssamount >> amountDouble;
+	double	amountDouble = stringToDouble(amount);//necesitamos un double porque nos pueden pasar decimales. double > float;
+												//sino con un int y un atoi se podria haber hecho;
 	if (amountDouble < 0)
 	{
 		std::cerr << "Error: not a positive number" << std::endl;
@@ -198,6 +196,15 @@ int	BitcoinExchange::stringToInt(std::string const & str)
 
 	ssint >> toInt;
 	return (toInt);
+}
+
+double	BitcoinExchange::stringToDouble(std::string const & str)
+{
+	std::stringstream ssdouble(str);
+	double	toDouble;
+
+	ssdouble >> toDouble;
+	return (toDouble);
 }
 
 std::string BitcoinExchange::intToString(int const &toString)
@@ -260,7 +267,8 @@ std::string	BitcoinExchange::getNextDate(std::string const & actualDate)
 	return (strYear + "-" + strMonth + "-" + strDay);
 }
 
-std::string BitcoinExchange::prevRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it)
+std::string BitcoinExchange::prevRoutine(std::string const & date,
+std::map<std::string, std::string>::iterator	it)
 {
 	std::string prevDate = date;
 	
@@ -275,7 +283,8 @@ std::string BitcoinExchange::prevRoutine(std::string const & date, std::map<std:
 	return (prevDate);
 }
 
-std::string BitcoinExchange::nextRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it)
+std::string BitcoinExchange::nextRoutine(std::string const & date,
+std::map<std::string, std::string>::iterator	it)
 {
 	std::string nextDate = date;
 
@@ -290,25 +299,42 @@ std::string BitcoinExchange::nextRoutine(std::string const & date, std::map<std:
 	return (nextDate);
 }
 
+std::string	BitcoinExchange::whichDate(std::string const & preDate,
+std::string const & nextDate, std::string const & date)
+{
+	int intPreDate = stringToInt(preDate.substr(0, 4)) + stringToInt(preDate.substr(5, 2))
+	+ stringToInt(preDate.substr(8, 2));
+	int	intNextDate = stringToInt(nextDate.substr(0, 4)) + stringToInt(nextDate.substr(5, 2))
+	+ stringToInt(nextDate.substr(8, 2));
+	int	intDate = stringToInt(date.substr(0, 4)) + stringToInt(date.substr(5, 2))
+	+ stringToInt(date.substr(8, 2));
+
+	if (std::abs(intPreDate - intDate) > std::abs(intNextDate - intPreDate))
+		return (nextDate);
+	else 
+		return (preDate);
+}
+
 void	BitcoinExchange::outputData(std::string const & date, std::string const & amount)
 {	
 	std::map<std::string, std::string>::iterator	it;
+	std::string dateToUse;
 	it = _data.find(date); //1)buscamos la fecha en nuesta base de datos
 
 	if (it == _data.end()) //2)si no la encontramos, buscamos la anterior y la siguiente
 	{
-		std::string dateToUse;
 		std::string	preDate = prevRoutine(date, it);
 		std::string nextDate = nextRoutine(date, it);
 		if (preDate == date)
 			dateToUse = nextDate;
 		else if (nextDate == date)
-			dateToUse == preDate;
+			dateToUse = preDate;
 		else
-		{
-			
-		}
+			dateToUse = whichDate(preDate, nextDate, date);
+		it = _data.find(dateToUse);
 	}
+	std::cout << date << " => " << amount << " = ";
+	std::cout << stringToDouble(it->second) * stringToDouble(amount) << std::endl;
 }
 
 int	BitcoinExchange::start(std::string const & fileName)
@@ -337,5 +363,6 @@ int	BitcoinExchange::start(std::string const & fileName)
 			continue;
 		outputData(date, amount);
 	}
+	inputFile.close();
 	return (EXIT_SUCCESS);
 }
