@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/04/30 18:42:51 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/01 13:40:17 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	BitcoinExchange::checker(std::string *line, std::ifstream *inputFile)
 	{
 		std::cerr << "Error: Input file is empty" << std::endl;
 		return (EXIT_FAILURE);
-	}
-	std::getline(*inputFile,  *line); // gestionamos la primera linea que tiene que ser "date | value"
+	} // gestionamos la primera linea que tiene que ser "date | value"
+	std::getline(*inputFile,  *line); 
 	if (*line != "date | value")
 	{
 		std::cerr <<"Error: incorrect format for input file" << std::endl;
@@ -108,26 +108,20 @@ bool BitcoinExchange::LeapYear(int const &intYear)
 bool BitcoinExchange::checkInts(std::string const &year, std::string const &month,
 std::string const &day)
 {
-	std::stringstream	ssyear(year);
-	std::stringstream	ssmonth(month);
-	std::stringstream	ssday(day);
-	int					intYear;
-	int					intMonth;
-	int					intDay;
+	int	intYear = stringToInt(year);
+	int	intMonth = stringToInt(month);
+	int	intDay = stringToInt(day);
 
-	ssyear >> intYear;
-	ssmonth >> intMonth;
-	ssday	>> intDay;
 	if (intYear < 2009 || intYear > 2022 || intMonth < 1 || intMonth > 12
 	|| intDay < 1 || intDay > 31)
 		return (false);
-	if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && intDay > 30)
-		return (false);
-	if (intMonth == 2)
+	if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && intDay > 30) 
+		return (false); // chequeo de meses que tienen 30 diaas
+	if (intMonth == 2) 
 	{
 		bool isLeapYear = LeapYear(intYear);
 		if (intDay > (isLeapYear ? 29 : 28))
-			return (false);
+			return (false); // chequeo de febrero si es bisiesto o no
 	}
 	return (true);
 }
@@ -149,6 +143,174 @@ bool BitcoinExchange::isDateValid(std::string const & date)
 	return (true);
 }
 
+bool BitcoinExchange::isAmountValid(std::string const & amount)
+{
+	if (amount.empty()) // que no este vacio
+	{
+		std::cerr << "Error: Amount empty" << std::endl;
+		return (false);
+	}
+	size_t	point1 = amount.find_first_of('.', 0); // que no haya dos puntos en el amount
+	if (point1 != std::string::npos)
+	{
+		size_t	point2 = amount.find_last_of('.', amount.length());
+		if (point1 != point2)
+		{
+			std::cerr << "Error: Amount not valid. Too many decimal points";
+			std::cerr << std::endl;
+			return (false);
+		}
+	}
+	bool hasSign = (amount[0] == '+' || amount[0] == '-');
+	for (size_t i = hasSign ? 1 : 0; i < amount.length(); i++) // que el amount sea un numero
+	{
+		if (isdigit(amount[i]) || amount[i] == '.')
+			continue;
+		std::cerr << "Error: Amount not valid. Not a number" << std::endl;
+		return (false);
+	}
+	return (true);
+}
+
+bool BitcoinExchange::isAmountInRange(std::string const & amount)
+{
+	std::stringstream ssamount(amount);
+	double	amountDouble; //necesitamos un double porque nos pueden pasar decimales. double > float;
+	//sino con un int y un atoi se podria haber hecho;
+	ssamount >> amountDouble;
+	if (amountDouble < 0)
+	{
+		std::cerr << "Error: not a positive number" << std::endl;
+		return (false);
+	}
+	if (amountDouble > 1000)
+	{
+		std::cerr << "Error: too large a number" << std::endl;
+		return (false);
+	}
+	return (true);
+}
+
+int	BitcoinExchange::stringToInt(std::string const & str)
+{
+	std::stringstream ssint(str);
+	int	toInt;
+
+	ssint >> toInt;
+	return (toInt);
+}
+
+std::string BitcoinExchange::intToString(int const &toString)
+{
+	std::stringstream ss;
+
+	ss << toString;
+	return (ss.str());
+}
+
+std::string BitcoinExchange::getPrevDate(std::string const & actualDate)
+{
+	int	year = stringToInt(actualDate.substr(0, 4));
+	int	month = stringToInt(actualDate.substr(5, 2));
+	int	day = stringToInt(actualDate.substr(8, 2));
+
+	int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //nº de dias en año no bisiesto
+	if (LeapYear(year)) // chequeamos si es bisiesto el año. 
+		daysInMonth[2] = 29;
+	day--; //vamos restando un dia a la fecha que no hemoss encontrado en nuestra base de datos.
+	if (day == 0) //  
+	{
+		month--; //si dia = 0; entonces tenemos que restar un mes;
+		if (month == 0)
+		{
+			month = 12; //si mes = 0; entonces estamos en Diciembre del año anterior;
+			year--;
+		}
+		day = daysInMonth[month]; // y en el ultimo dia del mes.
+	} //formateamos fecha
+	std::string strYear = intToString(year);
+	std::string strMonth = (month < 10) ? "0" + intToString(month) : intToString(month);
+	std::string strDay = (day < 10) ? "0" + intToString(day) : intToString(day);
+	return (strYear + "-" + strMonth + "-" + strDay);
+}
+
+std::string	BitcoinExchange::getNextDate(std::string const & actualDate)
+{
+	int	year = stringToInt(actualDate.substr(0, 4));
+	int	month = stringToInt(actualDate.substr(5, 2));
+	int	day = stringToInt(actualDate.substr(8, 2));
+
+	int daysInMonth[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; //nº de dias en año no bisiesto
+	if (LeapYear(year)) // chequeamos si es bisiesto el año. 
+		daysInMonth[2] = 29;
+	day++; // sumamos un dia, para encontrar la fecha siguiente
+	if (day > daysInMonth[month])
+	{
+		day = 1; 
+		month++; //comprobamos si nos hemos pasado de dias para el mes corriente
+		if (month > 12)
+		{
+			month = 1; //comprobamos si nos hemos pasado de meses
+			year++;
+		}
+	}//Formateamos fecha
+	std::string strYear = intToString(year);
+	std::string strMonth = (month < 10) ? "0" + intToString(month) : intToString(month);
+	std::string strDay = (day < 10) ? "0" + intToString(day) : intToString(day);
+	return (strYear + "-" + strMonth + "-" + strDay);
+}
+
+std::string BitcoinExchange::prevRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it)
+{
+	std::string prevDate = date;
+	
+	while (it == _data.end())
+	{
+		std::string const & actualDate = prevDate;
+		prevDate = getPrevDate(actualDate);
+		if (!isDateValid(prevDate))
+			return (date);
+		it = _data.find(prevDate);
+	}
+	return (prevDate);
+}
+
+std::string BitcoinExchange::nextRoutine(std::string const & date, std::map<std::string, std::string>::iterator	it)
+{
+	std::string nextDate = date;
+
+	while (it == _data.end())
+	{
+		std::string const & actualDate = nextDate;
+		nextDate = getNextDate(actualDate);
+		if (!isDateValid(nextDate))
+			return (date);
+		it = _data.find(nextDate);
+	}
+	return (nextDate);
+}
+
+void	BitcoinExchange::outputData(std::string const & date, std::string const & amount)
+{	
+	std::map<std::string, std::string>::iterator	it;
+	it = _data.find(date); //1)buscamos la fecha en nuesta base de datos
+
+	if (it == _data.end()) //2)si no la encontramos, buscamos la anterior y la siguiente
+	{
+		std::string dateToUse;
+		std::string	preDate = prevRoutine(date, it);
+		std::string nextDate = nextRoutine(date, it);
+		if (preDate == date)
+			dateToUse = nextDate;
+		else if (nextDate == date)
+			dateToUse == preDate;
+		else
+		{
+			
+		}
+	}
+}
+
 int	BitcoinExchange::start(std::string const & fileName)
 {
 	std::ifstream	inputFile(fileName);
@@ -161,19 +323,19 @@ int	BitcoinExchange::start(std::string const & fileName)
 		size_t	lim = line.find('|');
 		if (lim == std::string::npos)
 		{
-			std::cerr << "Error: bad input in line" << std::endl;
+			std::cerr << "Error: missing '|' in line: " << line << std::endl;
 			continue;
 		}
 		std::string date = trimSpace(line.substr(0, lim)); // gestionamos espacios 
 		std::string	amount = trimSpace(line.substr(lim + 1, line.length() - lim)); // gestionamos espacios
-		if (!isDateValid(date) || amount.empty())
+		if (!isDateValid(date))
 		{
-			std::cerr << "Error: Date or amount not valid:" << line << std::endl;
+			std::cerr << "Error: Date not valid:" << line << std::endl;
 			continue; 
 		}
-		
-		
-		
+		if (!isAmountValid(amount) || !isAmountInRange(amount))
+			continue;
+		outputData(date, amount);
 	}
 	return (EXIT_SUCCESS);
 }
