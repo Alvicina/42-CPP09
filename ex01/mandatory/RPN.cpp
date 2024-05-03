@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:20:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 18:31:24 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:12:58 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,79 @@ RPN& RPN::operator=(RPN const & other)
 	return (*this);
 }
 
-int	RPN::start(std::string const & input)
+bool	RPN::isOperator(char c)
 {
-	(void) input;
-	return (0);
+	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^')
+		return (true);
+	else
+		return (false);
 }
 
+bool	RPN::isNextSpace(char c)
+{
+	std::string whiteSpace = "\t\n\v\f\r ";
+	size_t	j = 0;
+
+	while (whiteSpace[j] && c != whiteSpace[j])
+		j++;
+	if (c == whiteSpace[j])
+		return (true);
+	else if (c == '\0')
+		return (true);
+	return (false);
+
+}
+
+bool	RPN::isInputValid(std::string const & input)
+{
+	size_t	i = 0;
+	std::string whiteSpace = "\t\n\v\f\r ";
 	
+	while (input[i])
+	{
+		size_t	j = 0;
+		while (input[i] != whiteSpace[j] && whiteSpace[j])
+			j++;
+		if (input[i] == whiteSpace[j])
+			i++;
+		else
+		{
+			if (!((isdigit(input[i]) || isOperator(input[i])) && isNextSpace(input[i + 1])) && input[i])
+			{
+				std::cerr << "Error: Invalid input" << std::endl;
+				return (false);
+			}
+			i++;
+		}
+	}
+	return (true);
+	
+}
+
+bool	RPN::areOperandsOK(std::string const & input)
+{
+	size_t	numCount = 0;
+	size_t	operandCount = 0;
+
+	for (size_t i = 0; input[i]; i++)
+	{
+		if (isdigit(input[i]))
+			numCount++;
+		else if (isOperator(input[i]))
+			operandCount++;
+	}
+	if (numCount > operandCount)
+		return (true);
+	else
+	{
+		std::cerr << "Error: Too many operators" << std::endl;
+		return (false);
+	}
+}
+
+int	RPN::start(std::string const & input)
+{
+	if ((!isInputValid(input) || !areOperandsOK(input)))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}

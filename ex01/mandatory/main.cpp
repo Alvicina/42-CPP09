@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:15:30 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 18:32:18 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 10:22:49 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	RPN	rpnSolver;
-	if (!rpnSolver.start(argv[1]))
+	if (rpnSolver.start(argv[1]))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
