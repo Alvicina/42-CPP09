@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:20:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 11:12:58 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 12:01:37 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,30 @@ bool	RPN::areOperandsOK(std::string const & input)
 	}
 }
 
-int	RPN::start(std::string const & input)
+void	RPN::replaceChars(std::string & inputNew, char c)
+{
+	std::string whiteSpace = "\t\n\v\f\r";
+	size_t		i = 0;
+	while (inputNew[i])
+	{	
+		size_t j = 0;
+		while (whiteSpace[j] && inputNew[i] != whiteSpace[j])
+			j++;
+		if (inputNew[i] == whiteSpace[j])
+		{
+			inputNew[i] = c;
+			i++;
+		}
+		else
+			i++;
+	}
+}
+
+int	RPN::start(std::string input)
 {
 	if ((!isInputValid(input) || !areOperandsOK(input)))
 		return (EXIT_FAILURE);
+	std::string intputNew = input;
+	replaceChars(intputNew, ' ');
 	return (EXIT_SUCCESS);
 }
