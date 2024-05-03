@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:20:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 15:55:42 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:20:17 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	RPN::isInputValid(std::string const & input)
 		{
 			if (!((isdigit(input[i]) || isOperator(input[i])) && isNextSpace(input[i + 1])) && input[i])
 			{
-				std::cerr << "Error: Invalid input" << std::endl;
+				std::cout << "Error: Invalid input" << std::endl;
 				return (false);
 			}
 			i++;
@@ -101,7 +101,7 @@ bool	RPN::areOperandsOK(std::string const & input)
 		return (true);
 	else
 	{
-		std::cerr << "Error: Too many operators" << std::endl;
+		std::cout << "Error: Too many operators" << std::endl;
 		return (false);
 	}
 }
@@ -166,7 +166,7 @@ int RPN::initSolver(std::string const & inputNew)
 		{
 			if (inputNew[i])
 			{
-				std::cerr << "Error: Solver-> not enough operands" << std::endl;
+				std::cout << "Error: Solver-> not enough operands" << std::endl;
 				return (EXIT_FAILURE);
 			}
 			break ;
@@ -175,7 +175,7 @@ int RPN::initSolver(std::string const & inputNew)
 	}
 	if (_rpnStack.size() >= 2)
 	{
-		std::cerr << "Error: Solver-> not enough operators" << std::endl;
+		std::cout << "Error: Solver-> not enough operators" << std::endl;
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
