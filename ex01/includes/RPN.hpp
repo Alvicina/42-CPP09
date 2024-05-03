@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:10:22 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 11:44:56 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:38:02 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ class RPN
 		bool areOperandsOK(std::string const & input);
 		bool isOperator(char c);
 		bool isNextSpace(char c);
-		void replaceChars(std::string & inputNew, char c);
+		void 	replaceChars(std::string & inputNew, char c);
+		int		initSolver(std::string const & inputNew);
+		void	solveOperation(char c);
+		int		rpnPop(void);
+		void	printSolution(void);
 		
 	public:
 		RPN();
