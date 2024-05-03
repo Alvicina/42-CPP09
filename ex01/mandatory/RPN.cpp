@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:20:04 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 13:40:22 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:55:42 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ int RPN::initSolver(std::string const & inputNew)
 		{
 			if (inputNew[i])
 			{
-				std::cerr << "Error: Solver-> Input error" << std::endl;
+				std::cerr << "Error: Solver-> not enough operands" << std::endl;
 				return (EXIT_FAILURE);
 			}
 			break ;
@@ -175,7 +175,7 @@ int RPN::initSolver(std::string const & inputNew)
 	}
 	if (_rpnStack.size() >= 2)
 	{
-		std::cerr << "Error: Solver-> Input error" << std::endl;
+		std::cerr << "Error: Solver-> not enough operators" << std::endl;
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
