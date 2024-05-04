@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:29:53 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 18:41:19 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/04 18:53:13 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,31 @@
 #include <list>
 #include <sstream>
 #include <limits>
+#include <iomanip>
+#include <time.h>
+#include <vector>
 
 class PmergeMe
 {
 	private:
-		std::deque<int> dequeContainer;
-		std::list<int> listContainer;
+		std::deque<int> _dequeContainer;
+		std::list<int> _listContainer;
 		void	inputToString(char **argv, std::string & numbers);
 		bool	isInputOk(std::string const & numbers);
-		bool	saveNumbersOk(std::string const & numbers);
+		void	saveNumbers(char **nums);
 		bool	checkForMaxInt(char **argv);
 		double	stringToDouble(std::string const & str);
-
+		void	printListNumbers(void);
+		template <typename T>
+		clock_t	MergeInsertSort(T & container);
+		template <typename T>
+		void	doPairs(T & container, std::vector<std::pair<int, int> > & pairList, int numberPais);
+		template <typename T>
+		void	addFirstsToContainer(T & container, std::vector<std::pair<int, int> > const & pairList);
+		template <typename T>
+		void	insertSort(T & container, std::vector<std::pair<int, int> > const & pairList);
+		void	assignPairValues(std::vector<std::pair<int, int> > & pairList, int it, int itNext);
+		
 	public:
 		PmergeMe();
 		~PmergeMe();
