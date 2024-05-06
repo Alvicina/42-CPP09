@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:33:06 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/04 19:26:03 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:00:48 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ PmergeMe& PmergeMe::operator=(PmergeMe const & other)
 	if (this != &other)
 	{
 		this->_dequeContainer = other._dequeContainer;
-		this->_listContainer = other._listContainer;
+		this->_vectorContainer = other._vectorContainer;
 	}
 	return (*this);
 }
@@ -85,7 +85,7 @@ void PmergeMe::saveNumbers(char **nums)
 	{
 		int	digit = atoi(nums[i]);
 		_dequeContainer.push_back(digit);
-		_listContainer.push_back(digit);
+		_vectorContainer.push_back(digit);
 		i++;
 	}
 }
@@ -106,11 +106,11 @@ bool PmergeMe::checkForMaxInt(char **argv)
 	return (true);
 }
 
-void PmergeMe::printListNumbers(void)
+void PmergeMe::printVectorNumbers(void)
 {
-	std::list<int>::iterator it;
+	std::vector<int>::iterator it;
 
-	for (it = _listContainer.begin(); it != _listContainer.end(); it++)
+	for (it = _vectorContainer.begin(); it != _vectorContainer.end(); it++)
 		std::cout << *it << ' ';
 	std::cout << std::endl;
 }
@@ -202,13 +202,13 @@ int	PmergeMe::start(char **nums)
 		return (EXIT_FAILURE);
 	saveNumbers(nums);
 	std::cout << "Before:" << std::setw(3);
-	printListNumbers();
+	printVectorNumbers();
 	clock_t dequeTime = MergeInsertSort<std::deque<int> >(_dequeContainer);
-	clock_t listTime = MergeInsertSort<std::list<int> >(_listContainer);
+	clock_t vectorTime = MergeInsertSort<std::vector<int> >(_vectorContainer);
 	std::cout << "After:" << std::setw(4);
-	printListNumbers();
+	printVectorNumbers();
 	std::cout << "Time to process a range of " << _dequeContainer.size() << " elements with std::deque: " << dequeTime << "us" <<std::endl;
-	std::cout << "Time to process a range of " << _listContainer.size() << " elements with std::list: " << listTime << "us" << std::endl;
+	std::cout << "Time to process a range of " << _vectorContainer.size() << " elements with std::vector: " << vectorTime << "us" << std::endl;
 	return (EXIT_SUCCESS);
 }
 

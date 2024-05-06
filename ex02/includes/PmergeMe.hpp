@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:29:53 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/04 18:53:13 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:58:51 by alejandro        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ class PmergeMe
 {
 	private:
 		std::deque<int> _dequeContainer;
-		std::list<int> _listContainer;
+		std::vector<int> _vectorContainer;
 		void	inputToString(char **argv, std::string & numbers);
 		bool	isInputOk(std::string const & numbers);
 		void	saveNumbers(char **nums);
 		bool	checkForMaxInt(char **argv);
 		double	stringToDouble(std::string const & str);
-		void	printListNumbers(void);
+		void	printVectorNumbers(void);
 		template <typename T>
 		clock_t	MergeInsertSort(T & container);
 		template <typename T>
