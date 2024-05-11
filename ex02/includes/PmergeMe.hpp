@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:29:53 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/06 16:58:51 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/05/11 12:39:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ class PmergeMe
 		void	printVectorNumbers(void);
 		template <typename T>
 		clock_t	MergeInsertSort(T & container);
+		template <typename Iterator>
+		Iterator next(Iterator iter, typename std::iterator_traits<Iterator>::difference_type n);
 		template <typename T>
 		void	doPairs(T & container, std::vector<std::pair<int, int> > & pairList, int numberPais);
 		template <typename T>

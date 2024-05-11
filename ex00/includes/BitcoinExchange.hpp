@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 09:56:59 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 15:59:32 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:03:36 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 class BitcoinExchange
 {

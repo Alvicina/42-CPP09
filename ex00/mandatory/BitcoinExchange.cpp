@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:06:48 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/01 16:37:24 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/11 11:55:54 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,7 +343,7 @@ void	BitcoinExchange::outputData(std::string const & date, std::string const & a
 
 int	BitcoinExchange::start(std::string const & fileName)
 {
-	std::ifstream	inputFile(fileName);
+	std::ifstream	inputFile(fileName.c_str());
 	std::string		line;
 	
 	if (checker(&line, &inputFile) == EXIT_FAILURE)

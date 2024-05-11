@@ -6,7 +6,7 @@
 /*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 18:10:22 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/03 13:38:02 by alvicina         ###   ########.fr       */
+/*   Updated: 2024/05/11 12:47:09 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stack>
 #include <iostream>
+#include <cstdlib>
 
 class RPN 
 {

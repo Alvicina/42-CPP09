@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alejandro <alejandro@student.42.fr>        +#+  +:+       +#+        */
+/*   By: alvicina <alvicina@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 16:33:06 by alvicina          #+#    #+#             */
-/*   Updated: 2024/05/06 17:00:48 by alejandro        ###   ########.fr       */
+/*   Updated: 2024/05/11 12:37:42 by alvicina         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,13 @@ void	PmergeMe::assignPairValues(std::vector<std::pair<int, int> > & pairList, in
 	}
 }
 
+template <typename Iterator>
+Iterator PmergeMe::next(Iterator iter, typename std::iterator_traits<Iterator>::difference_type n)
+{
+    std::advance(iter, n);
+    return iter;
+}
+
 template <typename T>
 void	PmergeMe::doPairs(T & container, std::vector<std::pair<int, int> > & pairList, 
 int numberPairs)
@@ -139,8 +146,8 @@ int numberPairs)
 
 	while  (i < numberPairs)	
 	{
-		assignPairValues(pairList, *it, *std::next(it));
-		it = std::next(it, 2);
+		assignPairValues(pairList, *it, *next(it, 1));
+		it = next(it, 2);
 		i++;
 	}
 	if (it != container.end())
